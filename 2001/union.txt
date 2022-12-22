@@ -1,0 +1,19 @@
+public Tableau union(Tableau relation2)
+    {
+        Tableau relation=new Tableau("union",this.getAttribus());
+        for(int i=0;i<this.getDonnees().size();i++)
+        {
+            if(this.isInTable(relation.getDonnees(),this.getDonnees().get(i))==false)
+            {
+                relation.addDonnee(this.getDonnees().get(i));
+            }
+        }
+        for (int j=0;j<relation2.getDonnees().size();j++)
+        {
+            if(this.isInTable(relation.getDonnees(),relation2.getDonnees().get(j))==false)
+            {
+                relation.addDonnee(relation2.getDonnees().get(j));
+            }
+        }
+        return relation;
+    }

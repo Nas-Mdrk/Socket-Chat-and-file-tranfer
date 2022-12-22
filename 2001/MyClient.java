@@ -1,0 +1,44 @@
+package client; 
+import java.io.*;
+import java .net.Socket;
+public class MyClient{
+    private static DataOutputStream dataOutputStream=null;
+    private static DataInputStream dataInputStream=null;
+    static String azgeg="un.txt";
+    
+    public MyClient(String mot){
+        this.azgeg=mot;
+    }
+    public void MyClient1(){
+        try(Socket socket=new Socket("localhost",8699)){
+            dataInputStream=new DataInputStream(socket.getInputStream());
+            dataOutputStream=new DataOutputStream(socket.getOutputStream());
+
+            //sendFile("E:/cours.pdf");
+            sendFile(azgeg);
+
+            dataInputStream.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private static void sendFile(String path) throws Exception{
+        int bytes=0;
+        File file=new File(path);
+        FileInputStream fileInputStream=new FileInputStream(file);
+
+        //send file size
+        dataOutputStream.writeLong(file.length());
+        //break file into chunks
+        byte[] buffer=new byte[4*1024];
+        while((bytes=fileInputStream.read(buffer))!=-1){
+            dataOutputStream.write(buffer,0,bytes);
+            dataOutputStream.flush();
+        }
+        System.out.println("Receive file");
+        fileInputStream.close();
+    }
+
+}
